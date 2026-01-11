@@ -60,6 +60,7 @@ make run
 ```
 
 ## Demo Steps (60-90 seconds)
+https://www.loom.com/share/b119900887b2480eb00bd98893b5e02c
 
 1. **Run the demo:**
    ```bash
@@ -111,5 +112,5 @@ Project-01-Task-Management-API/
 
 ## Links
 
-- **Demo Video:** [Loom link placeholder]
+- **Demo Video:** [Watch on Loom](https://www.loom.com/share/b119900887b2480eb00bd98893b5e02c)
 - **Neon Database:** https://neon.tech
