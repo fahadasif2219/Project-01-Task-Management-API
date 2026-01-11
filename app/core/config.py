@@ -9,7 +9,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     """Application settings loaded from environment."""
 
-    NEON_DATABASE_URL: str
+    DATABASE_URL: str
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
@@ -21,6 +21,6 @@ def get_settings() -> Settings:
         return Settings()
     except Exception as e:
         print(f"\n[ERROR] Configuration failed: {e}")
-        print("\nMake sure you have a .env file with NEON_DATABASE_URL set.")
-        print("Example: NEON_DATABASE_URL='postgresql+asyncpg://user:pass@host/db?sslmode=require'")
+        print("\nMake sure you have a .env file with DATABASE_URL set.")
+        print("Example: DATABASE_URL='postgresql+asyncpg://user:pass@host/db?sslmode=require'")
         sys.exit(1)

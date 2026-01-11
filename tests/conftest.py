@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 
 # Set test database URL before importing app modules
-os.environ["NEON_DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
+os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
 
 from app.main import app
 from app.core.database import get_session

@@ -37,7 +37,7 @@ cp .env.example .env
 Edit `.env` and add your Neon database URL:
 
 ```
-NEON_DATABASE_URL="postgresql+asyncpg://user:password@host/database?sslmode=require"
+DATABASE_URL="postgresql+asyncpg://user:password@host/database?sslmode=require"
 ```
 
 ### 3. Install Dependencies

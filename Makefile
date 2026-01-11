@@ -7,7 +7,7 @@ test:
 	uv run pytest -q
 
 run:
-	uv run uvicorn app.main:app --reload
+	uv run uvicorn app.main:app --reload --port 8001
 
 demo:
 	uv run python -m app.demo

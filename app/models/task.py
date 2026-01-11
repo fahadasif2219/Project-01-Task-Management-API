@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Any
 from uuid import UUID, uuid4
 
+from sqlalchemy import Enum as SAEnum
 from sqlmodel import SQLModel, Field, Column, JSON
 
 
@@ -39,9 +40,18 @@ class TaskBase(SQLModel):
 
     title: str
     description: str | None = None
-    status: TaskStatus = TaskStatus.TODO
-    priority: TaskPriority = TaskPriority.MEDIUM
-    skill_type: SkillType = SkillType.RUNBOOK
+    status: TaskStatus = Field(
+        default=TaskStatus.TODO,
+        sa_column=Column(SAEnum(TaskStatus, native_enum=False))
+    )
+    priority: TaskPriority = Field(
+        default=TaskPriority.MEDIUM,
+        sa_column=Column(SAEnum(TaskPriority, native_enum=False))
+    )
+    skill_type: SkillType = Field(
+        default=SkillType.RUNBOOK,
+        sa_column=Column(SAEnum(SkillType, native_enum=False))
+    )
     input_payload: dict[str, Any] | None = Field(default=None, sa_column=Column(JSON))
     output_payload: dict[str, Any] | None = Field(default=None, sa_column=Column(JSON))
 
@@ -52,8 +62,8 @@ class Task(TaskBase, table=True):
     __tablename__ = "tasks"
 
     id: UUID = Field(default_factory=uuid4, primary_key=True)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 
 class TaskCreate(TaskBase):

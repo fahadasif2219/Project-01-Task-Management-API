@@ -53,11 +53,11 @@ async def run_demo():
     load_dotenv()
 
     import os
-    db_url = os.getenv("NEON_DATABASE_URL")
+    db_url = os.getenv("DATABASE_URL")
     if not db_url:
-        print("[ERROR] NEON_DATABASE_URL not found in environment.")
+        print("[ERROR] DATABASE_URL not found in environment.")
         print("        Create a .env file with your Neon database URL.")
-        print("        Example: NEON_DATABASE_URL='postgresql+asyncpg://user:pass@host/db?sslmode=require'")
+        print("        Example: DATABASE_URL='postgresql+asyncpg://user:pass@host/db?sslmode=require'")
         sys.exit(1)
 
     # Mask password in output
@@ -67,6 +67,8 @@ async def run_demo():
     # Step 2: Initialize database
     print_section("Step 2: Initializing Database")
 
+    # Import models BEFORE init_db so SQLModel registers them
+    from app.models.task import Task, SkillType, TaskStatus, TaskPriority
     from app.core.database import init_db, async_session
     await init_db()
     print_success("Database tables created/verified")
@@ -74,7 +76,6 @@ async def run_demo():
     # Step 3: Create sample task
     print_section("Step 3: Creating Sample Task")
 
-    from app.models.task import Task, SkillType, TaskStatus, TaskPriority
     from uuid import uuid4
     from datetime import datetime, timezone
 
@@ -93,8 +94,8 @@ async def run_demo():
         priority=TaskPriority.HIGH,
         skill_type=SkillType.RUNBOOK,
         input_payload=sample_input,
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow(),
     )
 
     async with async_session() as session:
@@ -127,7 +128,7 @@ async def run_demo():
     async with async_session() as session:
         task_db = await session.get(Task, task.id)
         task_db.output_payload = result
-        task_db.updated_at = datetime.now(timezone.utc)
+        task_db.updated_at = datetime.utcnow()
         await session.commit()
 
     print_success(f"Output saved to task {task.id}")

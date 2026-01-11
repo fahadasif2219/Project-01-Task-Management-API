@@ -8,8 +8,16 @@ from app.core.config import get_settings
 
 settings = get_settings()
 
+# Ensure async driver prefix and fix SSL params for asyncpg
+db_url = settings.DATABASE_URL
+if db_url.startswith("postgresql://"):
+    db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+# asyncpg uses ssl= not sslmode=
+db_url = db_url.replace("sslmode=require", "ssl=require")
+db_url = db_url.replace("&channel_binding=require", "")
+
 engine = create_async_engine(
-    settings.NEON_DATABASE_URL,
+    db_url,
     echo=False,
     pool_pre_ping=True,
 )

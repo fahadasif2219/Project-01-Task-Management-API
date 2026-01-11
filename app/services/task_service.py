@@ -41,7 +41,7 @@ async def update_task(
     for key, value in update_data.items():
         setattr(task, key, value)
 
-    task.updated_at = datetime.now(timezone.utc)
+    task.updated_at = datetime.utcnow()
     await session.commit()
     await session.refresh(task)
     return task
